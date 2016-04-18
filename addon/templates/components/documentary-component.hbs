@@ -1,0 +1,20 @@
+<h2>{{signature}}</h2>
+
+<p>{{description}}</p>
+
+{{#if params.length}}
+  <p>Parameters:</p>
+  <ul>
+    {{#each params as |param|}}
+      <li>
+        <strong>{{param.name}}</strong>
+        {{#if param.type.name}}
+          ({{param.type.name}})
+        {{/if}}
+        {{~#if param.description~}}
+          : {{param.description}}
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
