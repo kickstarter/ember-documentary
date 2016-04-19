@@ -5,20 +5,23 @@ moduleForComponent('documentary-component', 'Integration | Component | documenta
   integration: true
 });
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+test('it renders the signature', function(assert) {
+  this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
 
-  this.render(hbs`{{documentary-component}}`);
+  const text = this.$('h2').text().trim();
+  assert.equal(text, '{{documentary-component componentPath=String}}');
+});
 
-  assert.equal(this.$().text().trim(), '');
+test('it renders the description', function(assert) {
+  this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
 
-  // Template block usage:
-  this.render(hbs`
-    {{#documentary-component}}
-      template block text
-    {{/documentary-component}}
-  `);
+  const text = this.$('p:first').text().trim();
+  assert.equal(text, 'Outputs the description of a given component.');
+});
 
-  assert.equal(this.$().text().trim(), 'template block text');
+test('it renders the parameters', function(assert) {
+  this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
+
+  const text = this.$('li:first').text().trim().replace(/\s+/g, ' ');
+  assert.equal(text, 'componentPath (String): Path to the component.');
 });
