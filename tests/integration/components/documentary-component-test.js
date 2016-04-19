@@ -25,3 +25,25 @@ test('it renders the parameters', function(assert) {
   const text = this.$('li:first').text().trim().replace(/\s+/g, ' ');
   assert.equal(text, 'componentPath (String): Path to the component.');
 });
+
+test('it renders a given block', function(assert) {
+  this.render(hbs`
+    {{#documentary-component componentPath='documentary-component'}}
+      Hello world!
+    {{/documentary-component}}
+  `);
+
+  const text = this.$().text().trim();
+  assert.equal(text, 'Hello world!');
+});
+
+test('gives the block access to component properties', function(assert) {
+  this.render(hbs`
+    {{#documentary-component componentPath='documentary-component' as |meta|}}
+      {{meta.signature}}
+    {{/documentary-component}}
+  `);
+
+  const text = this.$().text().trim();
+  assert.equal(text, '{{documentary-component componentPath=String}}');
+});
