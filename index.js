@@ -7,9 +7,9 @@ var JSDocParserPlugin = require('./jsdoc-parser-plugin');
 module.exports = {
   name: 'ember-documentary',
 
-  treeForApp: function(tree) {
+  treeForAddon: function(tree) {
     var trees = [
-      tree,
+      this._super.treeForAddon.call(this, tree),
       new JSDocParserPlugin(this.jsdocSearchPaths())
     ];
 

@@ -5,6 +5,7 @@ var Plugin = require('broccoli-plugin');
 var glob = require('glob');
 var esprima = require('esprima');
 var doctrine = require("doctrine");
+var mkdirp = require("mkdirp");
 
 JSDocParserPlugin.prototype = Object.create(Plugin.prototype);
 JSDocParserPlugin.constructor = JSDocParserPlugin;
@@ -17,7 +18,7 @@ function JSDocParserPlugin(inputNodes, options) {
 JSDocParserPlugin.prototype.build = function() {
   var json = {};
   var content = 'exports["default"] = ';
-  var outputPath = path.join(this.outputPath, 'ember-documentary.js');
+  var outputPath = path.join(this.outputPath, 'modules', 'ember-documentary');
 
   this.inputNodes.forEach(function (node) {
     Object.assign(json, this.nodeToJSDocJSON(node));
@@ -25,7 +26,8 @@ JSDocParserPlugin.prototype.build = function() {
 
   content += JSON.stringify(json);
 
-  fs.writeFileSync(outputPath, content);
+  mkdirp.sync(outputPath);
+  fs.writeFileSync(path.join(outputPath, 'ast.js'), content);
 };
 
 /**

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/documentary-component';
 
-import JSDocAST from 'dummy/ember-documentary';
+import JSDocAST from 'ember-documentary/ast';
 
 /**
  * Outputs the description of a given component.
