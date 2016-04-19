@@ -18,22 +18,15 @@ export default Ember.Component.extend({
   ast: Ember.computed('componentPath', function () {
     const componentPath = this.get('componentPath');
     const ast = JSDocAST[componentPath];
-
-    if (!ast) {
-      throw new Error(`Error trying to find AST: ${componentPath} not found.`);
-    }
-
-    return ast;
+    return ast || {};
   }),
 
   description: Ember.computed('ast', function () {
-    const ast = this.get('ast');
-    return ast.description || '';
+    return this.get('ast.description');
   }),
 
   params: Ember.computed('ast', function () {
-    const ast = this.get('ast');
-    const tags = ast.tags || [];
+    const tags = this.get('ast.tags') || [];
 
     return tags.filter(function (tag) {
       return tag.title === 'param';

@@ -47,3 +47,14 @@ test('gives the block access to component properties', function(assert) {
   const text = this.$().text().trim();
   assert.equal(text, '{{documentary-component componentPath=String}}');
 });
+
+test('renders components in pod structure', function(assert) {
+  this.render(hbs`
+    {{#documentary-component componentPath='test-components.hello-world' as |meta|}}
+      {{meta.description}}
+    {{/documentary-component}}
+  `);
+
+  const text = this.$().text().trim();
+  assert.equal(text, 'A fairly fake component.');
+});

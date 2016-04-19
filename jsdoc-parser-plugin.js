@@ -79,9 +79,15 @@ JSDocParserPlugin.prototype.nodeToJSDocJSON = function(searchPath) {
  */
 JSDocParserPlugin.prototype.normalizedPath = function (searchPath, jsPath) {
   var extName = path.extname(jsPath);
-  searchPath = path.join(searchPath, path.sep); // normalize # of ending slashes
+  // normalize # of ending slashes
+  searchPath = path.join(searchPath, path.sep);
+
   var normalized = jsPath.slice(searchPath.length, -extName.length)
-  return normalized.replace(new RegExp('\\' + path.sep, 'g'), '.');
+  // normalize slashes as periods
+  normalized = normalized.replace(new RegExp('\\' + path.sep, 'g'), '.');
+  // normalize pods/modules by removing trailing `.component`
+  normalized = normalized.replace(/\.component$/, '');
+  return normalized;
 };
 
 /**
