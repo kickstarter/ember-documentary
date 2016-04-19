@@ -17,6 +17,6 @@ module.exports = {
   },
 
   jsdocSearchPaths: function() {
-    return this.app.options.jsdocSearchPaths || ['app'];
+    return this.app.options.jsdocSearchPaths || ['app/components'];
   }
 };
