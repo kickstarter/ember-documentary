@@ -2,6 +2,8 @@
 
 Add JSDocs to your Ember components, then access those JSDocs elsewhere through an Ember component provided by `ember-documentary`. Great for living style guides.
 
+Note: This addon is a work in progress, so the API may change a lot. To that end, this addon won't follow semver for versions 0.0.x. Once this addon hits version 0.1.0, this addon will follow semver from then on.
+
 ## Installation
 
 * `git clone` this repository
