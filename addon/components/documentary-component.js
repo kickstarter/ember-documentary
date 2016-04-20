@@ -6,7 +6,17 @@ import JSDocAST from 'ember-documentary/ast';
 const positionalParamPrefix = '__positional_param__';
 
 /**
- * Outputs the description of a given component.
+ * Provides JSDoc information about a particular component.
+ *
+ * Pass a block to this component to define your own template and operate upon
+ * the JSDoc information. The block should take one argument, which is the
+ * instance of this component. So, you can use this component like so:
+ *
+ * ```hbs
+ * {{#documentary-component componentPath='documentary-component' as |meta|}}
+ *   {{meta.signature}}
+ * {{/documentary-component}}
+ * ```
  *
  * @param {String} componentPath - Path to the component.
  */

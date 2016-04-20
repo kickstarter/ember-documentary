@@ -16,7 +16,7 @@ test('it renders the description', function(assert) {
   this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
 
   const text = this.$('p:first').text().trim();
-  assert.equal(text, 'Outputs the description of a given component.');
+  assert.ok(/Provides JSDoc information about/.test(text));
 });
 
 test('it renders the parameters', function(assert) {
