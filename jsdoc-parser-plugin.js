@@ -47,9 +47,9 @@ JSDocParserPlugin.prototype.nodeToJSDocJSON = function(searchPath) {
   if (extensions === 0) {
     throw new Error('At least one file extension name is required.');
   } else if (extensions.length === 1) {
-    fileNames = `*.${extensions[0]}`;
+    fileNames = '*.' + extensions[0];
   } else {
-    fileNames = `*.{${extensions.join(',')}}`;
+    fileNames = '*.{' + extensions.join(',') + '}';
   }
   var searchQuery = path.join(searchPath, '**', fileNames);
 
