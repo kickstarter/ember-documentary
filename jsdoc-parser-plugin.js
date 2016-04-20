@@ -68,7 +68,10 @@ JSDocParserPlugin.prototype.nodeToJSDocJSON = function(searchPath) {
       return;
     }
 
-    var jsdocAST = doctrine.parse(comments[0].value, {
+    var comment = comments[0].value;
+    comment = this.preprocessComment(comment);
+
+    var jsdocAST = doctrine.parse(comment, {
       unwrap: true,
       sloppy: true
     });
@@ -111,6 +114,18 @@ JSDocParserPlugin.prototype.findJSDocCommentsFromAST = function(ast) {
     // comment is block-level and is a JSDoc comment, i.e. starts with `/**`.
     return comment.type === 'Block' && comment.value[0] === '*';
   });
+};
+
+/**
+ * @param {String} comment - A comment in JSDoc format.
+ * @returns {String} A comment run through some preprocessing.
+ */
+JSDocParserPlugin.prototype.preprocessComment = function(comment) {
+  // We want to add support for @positionalParam. Let's do that here.
+  var prefix = JSDocParserPlugin.defaultOptions.positionalParamPrefix;
+  var positionalParamRegex = /@positionalParam(\s+(?:\{.+\})?\s+)(\S+)/g;
+  comment = comment.replace(positionalParamRegex, '@param$1' + prefix + '$2');
+  return comment;
 };
 
 module.exports = JSDocParserPlugin;
