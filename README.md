@@ -21,7 +21,7 @@ Add JSDocs to your Ember components like so:
  * instance of this component. So, you can use this component like so:
  *
  * ```hbs
- * {{#documentary-component componentPath='documentary-component' as |meta|}}
+ * {{#documentary-component 'documentary-component' as |meta|}}
  *   {{meta.signature}}
  * {{/documentary-component}}
  * ```
@@ -35,7 +35,7 @@ export default Ember.Component.extend({
 Then in an Ember template, you can access the JSDoc information. An example:
 
 ```hbs
-{{#documentary-component componentPath='documentary-component' as |meta|}}
+{{#documentary-component 'documentary-component' as |meta|}}
   {{meta.signature}}
 {{/documentary-component}}
 ```

@@ -6,21 +6,21 @@ moduleForComponent('documentary-component', 'Integration | Component | documenta
 });
 
 test('it renders the signature', function(assert) {
-  this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
+  this.render(hbs`{{documentary-component 'documentary-component'}}`);
 
   const text = this.$('h2').text().trim();
-  assert.equal(text, '{{documentary-component componentPath=String}}');
+  assert.equal(text, '{{documentary-component componentPath}}');
 });
 
 test('it renders the description', function(assert) {
-  this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
+  this.render(hbs`{{documentary-component 'documentary-component'}}`);
 
   const text = this.$('p:first').text().trim();
   assert.ok(/Provides JSDoc information about/.test(text));
 });
 
 test('it renders the parameters', function(assert) {
-  this.render(hbs`{{documentary-component componentPath='documentary-component'}}`);
+  this.render(hbs`{{documentary-component 'documentary-component'}}`);
 
   const text = this.$('li:first').text().trim().replace(/\s+/g, ' ');
   assert.equal(text, 'componentPath (String): Path to the component.');
@@ -28,7 +28,7 @@ test('it renders the parameters', function(assert) {
 
 test('it renders a given block', function(assert) {
   this.render(hbs`
-    {{#documentary-component componentPath='documentary-component'}}
+    {{#documentary-component 'documentary-component'}}
       Hello world!
     {{/documentary-component}}
   `);
@@ -39,18 +39,18 @@ test('it renders a given block', function(assert) {
 
 test('gives the block access to component properties', function(assert) {
   this.render(hbs`
-    {{#documentary-component componentPath='documentary-component' as |meta|}}
+    {{#documentary-component 'documentary-component' as |meta|}}
       {{meta.signature}}
     {{/documentary-component}}
   `);
 
   const text = this.$().text().trim();
-  assert.equal(text, '{{documentary-component componentPath=String}}');
+  assert.equal(text, '{{documentary-component componentPath}}');
 });
 
 test('renders components in pod structure', function(assert) {
   this.render(hbs`
-    {{#documentary-component componentPath='test-components.hello-world' as |meta|}}
+    {{#documentary-component 'test-components.hello-world' as |meta|}}
       {{meta.description}}
     {{/documentary-component}}
   `);
@@ -61,7 +61,7 @@ test('renders components in pod structure', function(assert) {
 
 test('renders positional and optional parameters', function(assert) {
   this.render(hbs`
-    {{#documentary-component componentPath='test-components.funky-parameters' as |meta|}}
+    {{#documentary-component 'test-components.funky-parameters' as |meta|}}
       {{meta.signature}}
     {{/documentary-component}}
   `);

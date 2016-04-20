@@ -5,6 +5,23 @@
 
   <p>{{description}}</p>
 
+  {{#if positionalParams.length}}
+    <p>Positional parameters:</p>
+    <ul>
+      {{#each positionalParams as |param|}}
+        <li>
+          <strong>{{param.name}}</strong>
+          {{#if param.type.name}}
+            ({{param.type.name}})
+          {{~/if~}}
+          {{~#if param.description~}}
+            : {{param.description}}
+          {{/if}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
   {{#if params.length}}
     <p>Parameters:</p>
     <ul>

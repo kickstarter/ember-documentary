@@ -13,14 +13,14 @@ const positionalParamPrefix = '__positional_param__';
  * instance of this component. So, you can use this component like so:
  *
  * ```hbs
- * {{#documentary-component componentPath='documentary-component' as |meta|}}
+ * {{#documentary-component 'documentary-component' as |meta|}}
  *   {{meta.signature}}
  * {{/documentary-component}}
  * ```
  *
- * @param {String} componentPath - Path to the component.
+ * @positionalParam {String} componentPath - Path to the component.
  */
-export default Ember.Component.extend({
+let DocumentaryComponent = Ember.Component.extend({
   layout,
 
   componentPath: undefined,
@@ -80,6 +80,13 @@ export default Ember.Component.extend({
 
       return paramSignature;
     }).join(' ');
-    return `{{${componentName} ${positionalParams} ${params}}}`.trim().replace(/\s+/g, ' ');
+    const signature = [ componentName, positionalParams, params ].join(' ');
+    return `{{${signature.trim()}}}`;
   })
 });
+
+DocumentaryComponent.reopenClass({
+  positionalParams: ['componentPath']
+});
+
+export default DocumentaryComponent;
