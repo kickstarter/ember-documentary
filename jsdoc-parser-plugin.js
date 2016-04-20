@@ -11,9 +11,13 @@ JSDocParserPlugin.prototype = Object.create(Plugin.prototype);
 JSDocParserPlugin.constructor = JSDocParserPlugin;
 function JSDocParserPlugin(inputNodes, options) {
   this.inputNodes = inputNodes;
-  this.options = options || {};
+  this.options = Object.assign({}, JSDocParserPlugin.defaultOptions, options);
   Plugin.call(this, this.inputNodes, this.options);
 }
+
+JSDocParserPlugin.defaultOptions = {
+  positionalParamPrefix: '__positional_param__'
+};
 
 JSDocParserPlugin.prototype.build = function() {
   var json = {};
@@ -64,7 +68,10 @@ JSDocParserPlugin.prototype.nodeToJSDocJSON = function(searchPath) {
       return;
     }
 
-    var jsdocAST = doctrine.parse(comments[0].value, {unwrap: true});
+    var jsdocAST = doctrine.parse(comments[0].value, {
+      unwrap: true,
+      sloppy: true
+    });
     hash[normalizedPath] = jsdocAST;
   }.bind(this));
 

@@ -58,3 +58,14 @@ test('renders components in pod structure', function(assert) {
   const text = this.$().text().trim();
   assert.equal(text, 'A fairly fake component.');
 });
+
+test('renders positional and optional parameters', function(assert) {
+  this.render(hbs`
+    {{#documentary-component componentPath='test-components.funky-parameters' as |meta|}}
+      {{meta.signature}}
+    {{/documentary-component}}
+  `);
+
+  const text = this.$().text().trim().replace(/\s+/g, ' ');
+  assert.equal(text, '{{test-components.funky-parameters title body=String [description=String] [author="John"]}}');
+});

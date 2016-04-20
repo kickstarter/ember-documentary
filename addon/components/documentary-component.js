@@ -3,6 +3,8 @@ import layout from '../templates/components/documentary-component';
 
 import JSDocAST from 'ember-documentary/ast';
 
+const positionalParamPrefix = '__positional_param__';
+
 /**
  * Outputs the description of a given component.
  *
@@ -21,23 +23,53 @@ export default Ember.Component.extend({
     return ast || {};
   }),
 
-  description: Ember.computed('ast', function () {
-    return this.get('ast.description');
-  }),
+  description: Ember.computed.alias('ast.description'),
 
-  params: Ember.computed('ast', function () {
+  params: Ember.computed('ast.tags', function () {
     const tags = this.get('ast.tags') || [];
 
     return tags.filter(function (tag) {
-      return tag.title === 'param';
+      return tag.title === 'param' &&
+        tag.name.indexOf(positionalParamPrefix) !== 0;
     });
   }),
 
-  signature: Ember.computed('componentName', function () {
+  positionalParams: Ember.computed('ast.tags', function () {
+    const tags = this.get('ast.tags') || [];
+
+    return tags.filter(function (tag) {
+      return tag.title === 'param' &&
+        tag.name.indexOf(positionalParamPrefix) === 0;
+    }).map(function (tag) {
+      const clone = JSON.parse(JSON.stringify(tag));
+      clone.name = clone.name.slice(positionalParamPrefix.length);
+      return clone;
+    });
+  }),
+
+  signature: Ember.computed('componentName', 'params', function () {
     const componentName = this.get('componentName');
-    const params = this.get('params').map(function (param) {
-      return `${param.name}=${param.type.name}`;
+    const positionalParams = this.get('positionalParams').map(function (param) {
+      return param.name;
     }).join(' ');
-    return `{{${componentName} ${params}}}`;
+    const params = this.get('params').map(function (param) {
+      let paramSignature = param.name;
+
+      if (param.default) {
+        paramSignature += `=${param.default}`;
+      } else if (param.type && param.type.name) {
+        paramSignature += `=${param.type.name}`;
+      } else if (param.type && param.type.expression && param.type.expression.name) {
+        paramSignature += `=${param.type.expression.name}`;
+      }
+
+      // should be last, to wrap with [].
+      if (param.type && param.type.type === 'OptionalType') {
+        paramSignature = `[${paramSignature}]`;
+      }
+
+      return paramSignature;
+    }).join(' ');
+    return `{{${componentName} ${positionalParams} ${params}}}`.trim().replace(/\s+/g, ' ');
   })
 });
