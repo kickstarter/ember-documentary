@@ -7,17 +7,15 @@ var esprima = require('esprima');
 var doctrine = require("doctrine");
 var mkdirp = require("mkdirp");
 
+var positionalParamPrefix = '__positional_param__';
+
 JSDocParserPlugin.prototype = Object.create(Plugin.prototype);
 JSDocParserPlugin.constructor = JSDocParserPlugin;
 function JSDocParserPlugin(inputNodes, options) {
   this.inputNodes = inputNodes;
-  this.options = Object.assign({}, JSDocParserPlugin.defaultOptions, options);
+  this.options = options || {};
   Plugin.call(this, this.inputNodes, this.options);
 }
-
-JSDocParserPlugin.defaultOptions = {
-  positionalParamPrefix: '__positional_param__'
-};
 
 JSDocParserPlugin.prototype.build = function() {
   var json = {};
@@ -25,7 +23,12 @@ JSDocParserPlugin.prototype.build = function() {
   var outputPath = path.join(this.outputPath, 'modules', 'ember-documentary');
 
   this.inputNodes.forEach(function (node) {
-    Object.assign(json, this.nodeToJSDocJSON(node));
+    var jsdoc = this.nodeToJSDocJSON(node);
+    for (var key in jsdoc) {
+      if (jsdoc.hasOwnProperty(key)) {
+        json[key] = jsdoc[key];
+      }
+    }
   }.bind(this));
 
   content += JSON.stringify(json);
@@ -122,9 +125,9 @@ JSDocParserPlugin.prototype.findJSDocCommentsFromAST = function(ast) {
  */
 JSDocParserPlugin.prototype.preprocessComment = function(comment) {
   // We want to add support for @positionalParam. Let's do that here.
-  var prefix = JSDocParserPlugin.defaultOptions.positionalParamPrefix;
   var positionalParamRegex = /@positionalParam(\s+(?:\{.+\})?\s+)(\S+)/g;
-  comment = comment.replace(positionalParamRegex, '@param$1' + prefix + '$2');
+  var positionalParamReplacement = '@param$1' + positionalParamPrefix + '$2';
+  comment = comment.replace(positionalParamRegex, positionalParamReplacement);
   return comment;
 };
 
