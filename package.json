@@ -9,7 +9,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:testall"
+    "test": "ember try:each"
   },
   "repository": {
     "type": "git",
@@ -56,6 +56,9 @@
     "mkdirp": "^0.5.1"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "versionCompatibility": {
+     "ember": ">=1.13.0"
+    }
   }
 }

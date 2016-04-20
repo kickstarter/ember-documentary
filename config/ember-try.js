@@ -1,5 +1,7 @@
 /*jshint node:true*/
 module.exports = {
+  command: process.env.CI ? 'ember test --reporter xunit' : 'ember test',
+
   scenarios: [
     {
       name: 'default',
