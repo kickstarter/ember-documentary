@@ -1,4 +1,4 @@
-# Ember-documentary
+# Ember-documentary [![Build Status](https://travis-ci.org/kickstarter/ember-documentary.svg?branch=master)](https://travis-ci.org/kickstarter/ember-documentary)
 
 Add JSDocs to your Ember components, then access those JSDocs elsewhere through an Ember component provided by `ember-documentary`. Great for living style guides.
 
